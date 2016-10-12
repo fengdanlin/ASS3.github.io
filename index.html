@@ -30,7 +30,7 @@
 			app_name = app_name + ' ' + random_id.substring(random_id.length-4);
 
 			// create spacebrew client object
-			sb = new Spacebrew.Client({server:"DesignStudioASS3",reconnect:true});
+			sb = new Spacebrew.Client({server:"188.166.209.56",reconnect:true});
 
 			// set the base description
 			sb.name(app_name);
@@ -77,7 +77,7 @@
 			evt.preventDefault(); 
 
 	      	console.log("[onButtonPress] button has been pressed"); 
-	        sb.send("buttonPress", "string", "true");
+	        sb.send("buttonPress", "boolean", "true");
 		}
 
 		/**
