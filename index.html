@@ -7,106 +7,112 @@
     <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
 
+
+    <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery.mobile-1.2.0.min.js"></script>
+    <script type="text/javascript" src="js/mobile_detect.js"></script>
 	<script type="text/javascript" src="js/sb-1.4.1.js"></script>
+	<script type="text/javascript" src="js/sb-admin-0.1.4.js"></script>
+    <script type="text/javascript" src="js/admin_select.js"></script>
     <script type="text/javascript">
 
-    	window.onload = function(){
-    		setup();
-    	}
-	      
-		// Spacebrew Object
-		var sb, 
-			app_name = "button example";
+    	var sb = {}
+			, button_subs = []
+			, data_types = ["boolean"]
+			, debug = true;
+
+		// customize UI based on whether page is loaded on a mobile device
+		$(document).live("pagebeforecreate", function () { checkIfMobile(data_types) });
+
+		// when jquery mobile is ready to initialize the UI call the setUI function 
+		$(document).live("pageinit", setupUI);
+
+		// when window is loaded connect to Spacebrew
+		$(window).on("load", setupSpacebrew);
 
 		/**
 	     * setup Configure spacebrew connection and adds the mousedown listener.
 	     */
-		function setup (){
-			// we make a random name, which allows you connect more than one
-			// of this example from the same computer
-			// passing the "name" argument in a query string overrides this!
-			var random_id = "0000" + Math.floor(Math.random() * 10000);
-
-			app_name = app_name + ' ' + random_id.substring(random_id.length-4);
-
+		function setupSpacebrew (){
 			// create spacebrew client object
 			sb = new Spacebrew.Client({server:"188.166.209.56",reconnect:true});
+			sb.extend(Spacebrew.Admin);
 
 			// set the base description
-			sb.name(app_name);
+			sb.name("space button");
 			sb.description("This spacebrew client sends and receives boolean messages.");
 
 			// configure the publication and subscription feeds
-			sb.addPublish( "buttonPress", "boolean", "false" );
-			sb.addSubscribe( "toggleBackground", "boolean" );
+			sb.addPublish( "user1", "boolean", "false" );  
+			sb.addPublish( "user2", "boolean", "false" );  
+			sb.addPublish( "b1", "string", "button0" );     // publish or subscribe name must match select id
+			sb.addPublish( "b2", "string", "button0" );     // publish or subscribe name must match select id
+			sb.addPublish( "b3", "string", "button0" );     // publish or subscribe name must match select id
+			sb.addSubscribe( "toggleBackground", "string" );
 
 			// override Spacebrew events - this is how you catch events coming from Spacebrew
-			sb.onBooleanMessage = onBooleanMessage;
-			sb.onOpen = onOpen;
+			sb.onStringMessage = onStringMessage;
+			sb.onNewClient = onNewClient;
+			sb.onUpdateClient = onNewClient;
+			sb.onRemoveClient = onRemoveClient;
+			sb.onUpdateRoute = onUpdateRoute;
 
 			// connect to spacbrew
 			sb.connect();
 
-			// listen to the mouse 
-			var button = document.getElementById("1");
-			var button2 = document.getElementById("2");
-			var button3 = document.getElementById("3");
-
-
-
-			button.addEventListener("mouseup", onButtonPress);
-			button.addEventListener("mousedown", onButtonRelease);
-			button.addEventListener("touchstart", onButtonPress);
-			button.addEventListener("touchend", onButtonRelease);
-
-					button2.addEventListener("mouseup", onButtonPress);
-			button2.addEventListener("mousedown", onButtonRelease);
-			button2.addEventListener("touchstart", onButtonPress);
-			button2.addEventListener("touchend", onButtonRelease);
-
-					button3.addEventListener("mouseup", onButtonPress);
-			button3.addEventListener("mousedown", onButtonRelease);
-			button3.addEventListener("touchstart", onButtonPress);
-			button3.addEventListener("touchend", onButtonRelease);
-
 		}	
 
 		/**
-		 * Function that is called when Spacebrew connection is established
+		 * setupUI Function that create the event listeners for the sliders. It creates an callback
+		 * 		   function that sends a spacebrew message whenever an slide event is received.
 		 */
-		function onOpen() {
-			var message = "Connected as <strong>" + sb.name() + "</strong>. ";
-			if (sb.name() === app_name) {
-				message += "<br>You can customize this app's name in the query string <br>by adding <strong>name=your_app_name</strong>."
+		function setupUI() {
+			console.log("Setting up the UI listeners");
+
+			var button_press_event = "mousedown"
+				, button_release_event = "mouseup";
+
+			if ($.browser.mobile) {
+				button_press_event = "touchstart"; 
+				button_release_event = "touchend"; 
 			}
-			var nameElement = document.getElementById("name");
-			nameElement.innerHTML = message;
+
+			console.log("Setting up the UI listeners NEW ", button_press_event);
+
+			// listen to the mouse 
+			$(".button").on(button_press_event, function(event) {
+				onButtonPress(event);
+			});
+			$(".button").on(button_release_event, function(event) {
+				onButtonRelease(event);
+			});
+
+			// if app is running on a desktop computer then set data-native-menu= to "false"
+			$(".select-subscribe-boolean").bind( "change", function(event) {
+				console.log("select-subscribe-boolean - dropdown changed ", event);
+				var self = this;
+				updateRouteFromUI( event, self );
+			});		
 		}
 
 		/**
-	     * Function that is called whenever the button is pressed.  
+	     * onButtonPress Function that is called whenever the button is pressed.  
 	     * @param  {Event object} evt Holds information about the button press event
 	     */
 		function onButtonPress (evt){
-			// this line prevents the event being called twice
-			// on mobile 
-			evt.preventDefault(); 
-
-	      	console.log("[onButtonPress] button has been pressed"); 
-	        sb.send("buttonPress", "boolean", "true");
+		    console.log("[onButtonPress] button has been pressed ", evt.target.id); 
+		    console.log("user1", evt.target.id);
+	        sb.send(evt.target.id, "string", evt.target.id);
+	        sb.send("user1", "boolean", "true");
 		}
 
 		/**
-	     * Function that is called whenever the button is released.  
+	     * onButtonRelease Function that is called whenever the button is released.  
 	     * @param  {Event object} evt Holds information about the button press event
 	     */
 		function onButtonRelease (evt){
-			// this line prevents the event being called twice
-			// on mobile 
-			evt.preventDefault(); 
-
-	      	console.log("[onButtonRelease] button has been released"); 
-	        sb.send("buttonPress", "boolean", "false");
+	      	console.log("[onButtonRelease] button has been released ", evt.target.id); 
+	        sb.send("user2", "boolean", "false");
 		}
 
 		/**
@@ -115,38 +121,64 @@
 		 * @param  {String} name    Holds name of the subscription feed channel
 		 * @param  {Boolean} value  Holds value received from the subscription feed
 		 */
-		function onBooleanMessage( name, value ){
-			console.log("[onBooleanMessage] boolean message received ", value);
-			if (value) {
-		        document.body.style.background = "rgb(100,255,100)"; 
-			} else {
-		        document.body.style.background = "rgb(220,220,220)"; 				
+		function onStringMessage( name, value ){
+			console.log("[onBooleanMessage] string message received ", value);
+			if (value == "b1") {
+				$(".ui-page").css("background", "rgb(0,255,0)");
+			} else if(value == "b2") {
+				$(".ui-page").css("background", "rgb(225,0,0)");
+			}else if(value == "b3") {
+				$(".ui-page").css("background", "rgb(0,0,255)");
 			}
 		}
+
+		function onNewClient( client ) {
+			console.log("[onNewClient] new client ", client);
+			addPubSub(client, "boolean", "subscribe", button_subs);
+			$("select").selectmenu( "refresh" );
+		}
+
+		function onRemoveClient( name, address ) {
+			console.log("[onRemoveClient] remove client '" + name + "' with address '" + address + "'");
+			removePubSub(name, address, button_subs);
+			$("select").selectmenu( "refresh" );
+		}
+
+		function onUpdateRoute ( type, pub, sub ) {
+			updateRouteFromServer(type, pub, sub);
+			$("select").selectmenu( "refresh" );
+		}
+
 
 	</script>
 	</head>
 
 	<body>
 		<div class="container">
-            <h1>Your interests<br/>from Facebook</h1>
-            <div class="button color1 position1" id="1">
+            <div class="banner">
+                <a class="bannerText">CONTROL PANEL</a>
+            </div>
+            <h1>Your interests</h1>
+            <div class="button color1 position1" id="b1">
                 <a class="hobby1">Music</a>
             </div>
-            <div class="button color2 position2" id="2">
+           <div class="button color2 position2" id="b2">
                 <a class="hobby2">Sports</a>
             </div>
-            <div class="button color3 position3" id="3">
-                <a class="hobby3">Outdoors</a>
-            </div>
-            <div class="button color1 position4" id="1">
+            <div class="button color3 position3" id="b3">
+                <a class="hobby3">Movies</a>
+             </div>
+            <div class="button color1 position4" id="b1">
                 <a class="hobby4">Travel</a>
             </div>
-            <div class="button color2 position5" id="2">
+            <div class="button color2 position5" id="b2">
                 <a class="hobby5">Fishing</a>
             </div>
+            <div class="button color3 position6" id="b2">
+                <a class="hobby6">Gear of war</a>
+            </div>
             <div class="user">
-                <a>PETER</a>
+                <img src="UserA.png" alt="User Icon" style="width:100px;height:100px;">
             </div>
 		</div>
 	</body>
