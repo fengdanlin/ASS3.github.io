@@ -1,11 +1,11 @@
 html, body, h1, img, dl, dt, a, p {margin:0px; }
 
-body {width:100%; height:100%; font-family: AvenirLight, HelveticaBN, Arial, sans-serif; }
+body {width:100%; height:100%; font-family: AvenirLight, HelveticaBN, Arial, sans-serif; background-color: rgb(34, 37, 42);}
 
 .container{
    width:100%;
     height:100%;
-    background-color: rgb(34, 37, 42);
+    
    position: absolute;
    display: -webkit-flex;
    -webkit-flex-direction: row;
@@ -33,7 +33,7 @@ body {width:100%; height:100%; font-family: AvenirLight, HelveticaBN, Arial, san
     font-size:40px;
     padding-top:5%;
     padding-bottom:5%;
-    color:#9d91c1;
+    color:white;
 }
 
 .button a{
@@ -87,6 +87,22 @@ body {width:100%; height:100%; font-family: AvenirLight, HelveticaBN, Arial, san
 .hobby10{
   margin-left:25%;
   color: rgb(13,238,102);
+}
+.hobby11{
+  margin-left:25%;
+  color: rgb(255,86,86);
+}
+.hobby12{
+  margin-left:25%;
+  color: rgb(13,238,102);
+}
+.hobby13{
+  margin-left:25%;
+  color: rgb(80,239,224);
+}
+.hobby14{
+  margin-left:25%;
+  color: rgb(255,86,86);
 }
 .button{
    -webkit-border-radius: 100%;
@@ -168,6 +184,22 @@ body {width:100%; height:100%; font-family: AvenirLight, HelveticaBN, Arial, san
  
  color: white;
 }
+.button:active .hobby11{
+ 
+ color: white;
+}
+.button:active .hobby12{
+ 
+ color: white;
+}
+.button:active .hobby13{
+ 
+ color: white;
+}
+.button:active .hobby14{
+ 
+ color: white;
+}
 .color1{
     border:solid 4px rgb(255,86,86);
     padding: 5px;
@@ -238,4 +270,23 @@ body {width:100%; height:100%; font-family: AvenirLight, HelveticaBN, Arial, san
     margin-top:85%;
     position:absolute;
 }
-
+.position11{
+    margin-left:-13%;
+    margin-top:24%;
+    position:absolute;
+}
+.position12{
+    margin-left:6%;
+    margin-top:83%;
+    position:absolute;
+}
+.position13{
+    margin-left:69%;
+    margin-top:83%;
+    position:absolute;
+}
+.position14{
+    margin-left:89%;
+    margin-top:24%;
+    position:absolute;
+}
