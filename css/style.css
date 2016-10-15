@@ -1,6 +1,6 @@
 html, body, h1, img, dl, dt, a, p {margin:0px; }
 
-body { font-family: AvenirLight, HelveticaBN, Arial, sans-serif; background: rgb(34, 37, 42);}
+body { width:140% ;font-family: AvenirLight, HelveticaBN, Arial, sans-serif; background: rgb(34, 37, 42);}
 
 .container{
    width:100%;
