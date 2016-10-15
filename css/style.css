@@ -32,7 +32,7 @@ body {width:100%; height:100%; font-family: AvenirLight, HelveticaBN, Arial, san
     text-align:center;
     font-size:40px;
     padding-top:15%;
-    padding-bottom:5%;
+    padding-bottom:0%;
     color:white;
 }
 .container h3{
@@ -41,7 +41,7 @@ body {width:100%; height:100%; font-family: AvenirLight, HelveticaBN, Arial, san
     font-size:30px;
     padding-top:0%;
     padding-bottom:5%;
-    color:rgb(54, 57, 62);
+    color:rgb(74, 77, 82);
 }
 
 .button a{
@@ -226,75 +226,75 @@ body {width:100%; height:100%; font-family: AvenirLight, HelveticaBN, Arial, san
 
 .position1{
     margin-left:37.5%;
-    margin-top:25%;
+    margin-top:20%;
     position:absolute;
 }
 
 .position2{
     margin-left:15%;
-    margin-top:42%;
+    margin-top:37%;
     position:absolute;
 }
 
 .position3{
     margin-left:60%;
-    margin-top:42%;
+    margin-top:37%;
     position:absolute;
 }
 
 .position4{
     margin-left:24%;
-    margin-top:70%;
+    margin-top:65%;
     position:absolute;
 }
 
 .position5{
     margin-left:52%;
-    margin-top:70%;
+    margin-top:65%;
     position:absolute;
 }
 .position6{
     margin-left:11%;
-    margin-top:15%;
+    margin-top:10%;
     position:absolute;
 }
 .position7{
     margin-left:65%;
-    margin-top:15%;
+    margin-top:10%;
     position:absolute;
 }
 .position8{
     margin-left:-4%;
-    margin-top:64%;
+    margin-top:59%;
     position:absolute;
 }
 .position9{
     margin-left:80%;
-    margin-top:64%;
+    margin-top:59%;
     position:absolute;
 }
 .position10{
     margin-left:38%;
-    margin-top:95%;
+    margin-top:90%;
     position:absolute;
 }
 .position11{
     margin-left:-13%;
-    margin-top:34%;
+    margin-top:29%;
     position:absolute;
 }
 .position12{
     margin-left:6%;
-    margin-top:93%;
+    margin-top:89%;
     position:absolute;
 }
 .position13{
     margin-left:69%;
-    margin-top:93%;
+    margin-top:89%;
     position:absolute;
 }
 .position14{
     margin-left:89%;
-    margin-top:34%;
+    margin-top:29%;
     position:absolute;
 }
